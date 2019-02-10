@@ -2,12 +2,19 @@ from dataclasses import dataclass, field
 from itertools import count
 from typing import Tuple
 
-__all__ = ["Type", "NamedType", "AbstractType", "FuncType", "BOOL", "INT"]
+from ordering import Ordering
+
+__all__ = ["Type", "NamedType", "AbstractType", "FuncType", "BOOL", "INT", "type_simplicity"]
+
+# Type simplicity is an ordering on types, where types defined earlier are considered "simpler"
+type_simplicity = Ordering()
 
 
 @dataclass(eq=False, frozen=True)
 class Type:
-    pass
+    def __post_init__(self):
+        if self not in type_simplicity:
+            type_simplicity.insert_end(self)
 
 
 @dataclass(frozen=True)
@@ -34,6 +41,9 @@ class AbstractType(Type):
 class FuncType(Type):
     arg_types: Tuple[Type, ...]
     return_type: Type
+
+    def __post_init__(self):
+        pass
 
     @property
     def type_params(self):

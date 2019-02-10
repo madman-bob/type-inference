@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from type_inference.types import Type, NamedType, AbstractType, FuncType
+from type_inference.types import Type, NamedType, AbstractType, FuncType, BOOL, INT, type_simplicity
 
 
 class TestTypes(TestCase):
@@ -42,3 +42,10 @@ class TestTypes(TestCase):
 
     def test_function_type_repr(self):
         self.assertEqual("(a,) -> b", repr(FuncType((NamedType("a"),), NamedType("b"))))
+
+    def test_type_simplicity(self):
+        a, b = Type(), Type()
+
+        self.assertTrue(type_simplicity.compare(a, b))
+        self.assertTrue(type_simplicity.compare(BOOL, a))
+        self.assertTrue(type_simplicity.compare(INT, a))
