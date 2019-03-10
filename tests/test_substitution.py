@@ -92,3 +92,9 @@ class TestSubstitution(TestCase):
             TypeSubstitution({b: a}),
             TypeSubstitution({a: b}) + TypeSubstitution({b: a})
         )
+
+    def test_type_substitution_closure(self):
+        self.assertEqual(
+            TypeSubstitution({a: c, b: c}),
+            TypeSubstitution({a: b, b: c}).closure()
+        )

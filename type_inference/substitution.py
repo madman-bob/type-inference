@@ -64,3 +64,15 @@ class TypeSubstitution:
                 )
             )
         )
+
+    def closure(self):
+        """
+        The closure of a substitution, acquired by repeatedly applying a substitution to itself
+        """
+        previous_total = None
+        total = self
+
+        while total != previous_total:
+            previous_total, total = total, total + total
+
+        return total
